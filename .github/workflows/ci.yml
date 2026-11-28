@@ -1,23 +1,25 @@
-name: orderlab ci-cd
+name: OrderLab CI-CD
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-
 permissions:
   contents: read
 
 jobs:
+  # 1. 코드 품질 검사 및 테스트
   quality:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-python@v7
         with:
-            python-version: "3.13"
+          python-version: "3.14"
 
       - name: Install dependencies
         run: python -m pip install -r requirements-dev.txt
@@ -27,12 +29,14 @@ jobs:
 
       - name: Ruff format
         run: ruff format --check .
-      
+
       - name: Run pytest
         run: python -m pytest -q
+
+  # 2. GitHub Pages 자동 배포
   deploy:
     if: github.event_name == 'push'
-    needs: qulity
+    needs: quality
 
     runs-on: ubuntu-latest
 
@@ -40,21 +44,21 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    
+
     environment:
       name: github-pages
-      url: ${{steps.deployment.outpus.page_url}}
-    
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v7
+
       - uses: actions/setup-python@v7
         with:
-          python-version:"3.13"
+          python-version: "3.14"
 
       - name: Install dependencies
         run: python -m pip install -r requirements-dev.txt
-      
-      
+
       - name: Generate HTML report
         run: python generate_report.py
 
