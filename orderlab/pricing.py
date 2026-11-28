@@ -11,7 +11,7 @@ def final_total(price: int, qty: int, discount: int) -> int:
 
     amount = subtotal(price, qty)
 
-    amount -= amount * discount / 100
+    amount -= amount * discount // 100
 
     if 0 < amount < 50000:
         shipping = 3000

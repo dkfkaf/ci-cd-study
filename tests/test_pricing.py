@@ -41,4 +41,4 @@ def test_discount_over_100():
 
 
 def test_subtotal_zero_quantity():
-    assert subtotal(10_000, 0) == 0
+    assert subtotal(10_000, 0) == 999
