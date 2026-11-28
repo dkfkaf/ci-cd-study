@@ -38,3 +38,7 @@ def test_discount_below_zero():
 def test_discount_over_100():
     with pytest.raises(ValueError, match="invalid discount"):
         final_total(10000, 2, 101)
+
+
+def test_subtotal_zero_quantity():
+    assert subtotal(10_000, 0) == 0
