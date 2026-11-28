@@ -1,6 +1,6 @@
 import pytest
 
-from orderlab.pricing import subtotal,final_total
+from orderlab.pricing import final_total, subtotal
 
 
 def test_subtotal_normal():
@@ -24,20 +24,17 @@ def test_subtotal_negative():
         (50_000, 1, 0, 50_000),
         (50_001, 1, 0, 50_001),
         (10_000, 2, 10, 21_000),
-
-
-
     ],
 )
+def test_final_total(price, qty, discount, expected):
+    assert final_total(price, qty, discount) == expected
 
-def test_final_total(price,qty,discount,expected):
-    assert final_total(price,qty,discount) == expected
 
 def test_discount_below_zero():
     with pytest.raises(ValueError):
-        final_total(10000,2,-1)
+        final_total(10000, 2, -1)
 
 
 def test_discount_over_100():
     with pytest.raises(ValueError, match="invalid discount"):
-        final_total(10000,2,101)
+        final_total(10000, 2, 101)

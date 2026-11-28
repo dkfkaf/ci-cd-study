@@ -1,16 +1,18 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel,Field
+from pydantic import BaseModel, Field
 
 from orderlab.pricing import subtotal
 
+
 class OrderIn(BaseModel):
-    price: int =Field(ge=0)
+    price: int = Field(ge=0)
     quantity: int = Field(gt=0)
+
 
 def create_app() -> FastAPI:
     app = FastAPI()
 
-    store: dict[int,int] = {}
+    store: dict[int, int] = {}
 
     @app.post("/orders", status_code=201)
     def create_order(data: OrderIn):
@@ -22,9 +24,8 @@ def create_app() -> FastAPI:
         )
 
         return {
-            "id" : order_id,
+            "id": order_id,
             "subtotal": store[order_id],
-
         }
 
     @app.get("/orders/{order_id}")

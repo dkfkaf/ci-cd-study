@@ -1,5 +1,7 @@
 import pytest
+
 from orderlab.csv_report import revenue_from_csv
+
 
 def test_csv_revenue(tmp_path):
     csv_file = tmp_path / "orders.csv"
@@ -9,7 +11,8 @@ def test_csv_revenue(tmp_path):
         encoding="utf-8",
     )
 
-    assert revenue_from_csv(csv_file) ==35000
+    assert revenue_from_csv(csv_file) == 35000
+
 
 def test_csv_empty(tmp_path):
     csv_file = tmp_path / "empty.csv"
@@ -21,9 +24,11 @@ def test_csv_empty(tmp_path):
 
     assert revenue_from_csv(csv_file) == 0
 
+
 def test_csv_missing_file(tmp_path):
     with pytest.raises(FileNotFoundError):
-        revenue_from_csv(tmp_path/"missing.csv")
+        revenue_from_csv(tmp_path / "missing.csv")
+
 
 def test_csv_invaild_number(tmp_path):
     csv_file = tmp_path / "invalid.csv"
